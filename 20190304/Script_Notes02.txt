@@ -1,0 +1,91 @@
+192.168.137.1
+255.255.255
+
+server01
+ip : 192.168.137.100
+netmask : 255.255.255.0
+gateway : 192.168.137.1
+dns : 168.126.63.1
+     or 8.8.8.8
+
+init 0
+init 6
+
+ipconfig -> ifconfig(Linux)
+
+cd /etc/sysconfig/network-scripts/
+dir
+cat ifcfg-eth0
+vi ifcfg-eth0
+- insert key -> 입력모드로 변경
+- esc key -> :q! (저장하지 않고 빠져나오기)
+- esc key -> :wq! (저장하고 빠져나오기)
+- cat ifcfg-eth0
+
+BOOTPROTO="dhcp" -> static
+ONBOOT="no" -> yes
+IPADDR="192.168.137.100"
+NETMASK="255.255.255.0"
+GATEWAY="192.168.137.1"
+DNS1="168.126.63.1"
+
+history(키입력 이력 보기)
+!7(키입력 이력 실행)
+clear(화면 클리어)
+
+systemctl restart network
+ip addr
+
+yum check-update
+
+pwd
+root -> /root #
+hadoop -> /home/hadoop $
+cd /etc/sysconfig/network-scripts/ifcfg-eth0
+systemctl restart network
+systemctl status network
+ping 192.168.137.1
+ping 192.168.137.100
+(ctrl+c) -> break 어떤 수행을 멈추고 싶을때 사용하는 키
+
+yum clean all
+yum check-update
+
+% Host 네트워카드 리셋(공유)
+ping 8.8.8.8
+ping 168.126.63.1
+
+yum check-updyte
+yum install net-tools -> ifconfig....
+ifconfig(o)
+yum install bind-utils -> nslookup
+putty.exe
+
+192.168.137.100
+
+pwd
+
+user10
+user20
+
+-> user10
+
+.bash_profile
+.bashrc
+
+yum install wget
+windows scp
+yum install jdk-8u201-linux-x64.rpm
+
+/home/hadoop/.bash_profile
+
+vi .bash_profile
+
+export JAVA_HOME=/usr/java/default
+export PATH=$PATH:$JAVA_HOME/bin
+export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/bin:$JAVA_HOME/lib/tools.jar
+
+source .bash_profile
+
+
+

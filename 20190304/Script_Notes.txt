@@ -1,0 +1,17 @@
+3.4 ~ 3.6 데이터 수집
+ - sqoop, flume, kafka -> Linux Shell -> ZooKeeper
+3.7 ~ 3.18 20773A
+
+3.19 ~ 4.1 HDInsight(Hadoop) & Spark
+
+hyper-v (Microsoft) - windows
+vmware -... - windows, linux
+virtualbox (Oracle) - windows, linux
+root 
+hadoop
+
+id : hadoop
+pwd : hadoop
+
+* Windows
+administrator 
