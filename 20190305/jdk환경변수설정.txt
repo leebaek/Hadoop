@@ -1,0 +1,6 @@
+.bashrc or .bash_profile에 밑의 환경 변수를 추가함
+
+# Java 환경 변수
+export JAVA_HOME=/usr/java/default
+export PATH=$PATH:$JAVA_HOME/bin
+export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/bin:$JAVA_HOME/lib/tools.jar

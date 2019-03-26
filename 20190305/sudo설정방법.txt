@@ -1,0 +1,21 @@
+1. sudo 권한을 부여할 사용자를 추가한다.(username을 원하는 이름으로 변경하기 바란다.)
+
+adduser username
+
+2. username 사용자를 wheel group에 추가한다. CentOS에서는 wheel group의 멤버가 sudo 권한을 가진다.
+
+usermod -aG wheel username
+
+3. sudo visudo 명령어를 실행하여 /etc/sudoers의 일부설정을 변경한다.
+
+sudo visudo --> /etc/sudoers 파일 열기
+
+그리고 wheel no password 설정이 주석처리되어 있다면, 주석처리를 해제한다.
+
+(수정전)
+## Same thing without a password
+# %wheel ALL=(ALL) NOPASSWD: ALL
+
+(수정후)
+## Same thing without a password
+%wheel ALL=(ALL) NOPASSWD: ALL

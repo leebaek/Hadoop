@@ -1,0 +1,87 @@
+* etc/hadoop/core-site.xml
+<configuration>
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://localhost:9000</value>
+    </property>
+</configuration>
+
+* etc/hadoop/hdfs-site.xml
+<configuration>
+    <property>
+        <name>dfs.replication</name>
+        <value>1</value>
+    </property>
+</configuration>
+
+$ cd ~
+$ rm -rf .ssh
+
+$ ssh localhost
+
+$ ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+$ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+$ chmod 0600 ~/.ssh/authorized_keys
+
+$ cd hadoop-2.9.2
+$ bin/hdfs namenode -format
+$ sbin/start-dfs.sh
+
+host -> server02, server01
+-> windows server 2016 hosts <- server02... server01
+
+C:\Windows\System32\drivers\etc
+hosts
+
+* NameNode - http://localhost:50070/
+-> http://server02:50070/
+
+$ bin/hdfs dfs -mkdir /user
+$ bin/hdfs dfs -mkdir /user/hadoop
+$ bin/hdfs dfs -put etc/hadoop input
+$ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.9.2.jar grep input output 'dfs[a-z.]+'
+$ bin/hdfs dfs -get output output
+$ cat output/*
+$ bin/hdfs dfs -cat output/*
+$ sbin/stop-dfs.sh
+
+$ cp mapred-site.xml.template mapred-site.xml
+* etc/hadoop/mapred-site.xml
+<configuration>
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+    </property>
+</configuration>
+* etc/hadoop/yarn-site.xml
+<configuration>
+    <property>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>mapreduce_shuffle</value>
+    </property>
+</configuration>
+
+$ sbin/start-yarn.sh
+
+* ResourceManager - http://localhost:8088/
+  ResourceManager - http://server02:8088/
+
+$ sbin/stop-all.sh (stop-dfs.sh, stop-yarn.sh)
+$ sbin/start-all.sh (star-dfs.sh, start-yarn.sh)
+
+$ tar xvfz ...
+cp ~/sqljdbc_6.0/kor/jre8
+cp sqljdbc42.jar ~/sqoop-1.4.7.bin__hadoop-2.6.0/lib/
+cd ~/sqoop-1.4.7.bin__hadoop-2.6.0
+cd conf
+cp sqoop-env-template.sh sqoop-env.sh
+vi sqoop-env.sh
+-> export HADOOP_COMMON_HOME=/home/hadoop/hadoop-2.9.2
+-> export HADOOP_MAPRED_HOME=/home/hadoop/hadoop-2.9.2
+cd ..
+cd ~/sqoop-1.4.7.bin__hadoop-2.6.0
+bin/sqoop
+cat ~/.bash_profile => 환경변수
+cat ~/sqoop-1.4.7.bin__hadoop-2.6.0/conf/sqoop-env.sh
+
+bin/sqoop list-databases --connect jdbc:sqlserver://70.12.114.130:1433 --username 'sa' --password '1234'

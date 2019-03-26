@@ -1,0 +1,43 @@
+* server01 (CentOS 7) - 192.168.137.100
+sqoop <- RDBMS(MariaDB Server..) 수집기
+flume <- Logs...(Folder...) 수집기
+jdk
+
+WebServer(Apache Web Server)
+MariaDB(Database Server)
+
+server02 (CentOS 7) - 192.168.137.101
+hadoop => Standalone
+- Batch Processing (처리)
+- HDFS (저장) 
+jdk
+
+Azure => CentOS 2 EA
+
+
+# yum install net-tools bind-utils 
+winscp -> jdk -> 192.168.137.101
+# yum install jdk-8u201-linux-x64.rpm
+$ cd ~
+$ vi .bash_profile
+
+export JAVA_HOME=/usr/java/default
+export PATH=$PATH:$JAVA_HOME/bin
+export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/bin:$JAVA_HOME/lib/tools.jar
+
+$ source .bash_profile
+
+# vi /etc/hosts -> server01, server02 설정 
+
+192.168.137.100	server01
+192.168.137.101 server02
+
+# systemctl restart network
+
+=> server01 (mariadb, apache web server)
+
+* server01 -> mariadb install
+# yum install mariadb-server
+
+
+

@@ -1,0 +1,83 @@
+﻿* Mariadb 설치 및 시작하기 
+
+$ sudo yum install mariadb-server
+$ sudo systemctl start mariadb
+$ sudo systemctl enable mariadb
+$ sudo systemctl status mariadb
+
+
+* Mariadb 설정
+$ sudo mysql_secure_installation
+----------------------------------------------------------------------------------------
+The existing password for the user account root has expired. Please set a new password.
+New password:
+----------------------------------------------------------------------------------------
+Estimated strength of the password: 100
+Change the password for root ? (Press y|Y for Yes, any other key for No) :
+----------------------------------------------------------------------------------------
+
+
+* MariaDB 접속 테스트 
+$ mysql -u root -p
+show databases;
+
+mysql workbench download
+systemctl stop firewalld
+systemctl status firewalld
+systemctl disable firewalld
+
+# mysql -u root -p
+> use mysql;
+
+* root 암호 변경 
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'Pa$$w0rd123';
+flush privileges; 
+
+- 사용자추가
+insert into user(host,user,authentication_string,ssl_cipher,x509_issuer,x509_subject) values('localhost','hadoop',password('Pa$$w0rd123'),'','',''); //로컬
+
+insert into user(host,user,authentication_string,ssl_cipher,x509_issuer,x509_subject) values('127.0.0.1','hadoop',password('Pa$$w0rd123'),'','',''); //로컬
+
+insert into user(host,user,authentication_string,ssl_cipher,x509_issuer,x509_subject) values('%','hadoop',password('Pa$$w0rd123'),'','',''); //외부
+
+flush privileges;
+
+- 권한추가
+grant all privileges on *.* to hadoop@localhost identified by 'Pa$$w0rd123' with grant option; //로컬
+
+grant all privileges on *.* to hadoop@127.0.0.1 identified by 'Pa$$w0rd123' with grant option; //로컬
+
+grant all privileges on *.* to 'hadoop'@'%' identified by 'Pa$$w0rd123' with grant option; //외부
+
+flush privileges;
+
+hadoop -> localhost, 127.0.0.1, %
+          *.*
+select user, host from user;
+
+* mysql-connector-java
+http://ftp.kaist.ac.kr/mysql/Downloads/Connector-J/mysql-connector-java-5.1.42.tar.gz
+
+* create database sampledb
+
+* create table
+create table testtbl(myid INT, mymessage VARCHAR(255), mydecimal DECIMAL(8,4));
+
+* sample data
+1,I am a boy,1.2
+2,You are a girl,2.3
+3,Are you a man,4.5
+
+* LOAD DATA LOCAL INFILE '/home/hadoop/sample_data' INTO TABLE testtbl COLUMNS TERMINATED BY ',';
+
+
+* sqoop import --connect jdbc:mysql://192.168.111.150/sampledb --username hadoop --password Pa$$w0rd1 --table testtbl --m 1
+
+bin/sqoop import --connect jdbc:mysql://192.168.111.150:3306/sampledb --username hadoop --password hadoop --m 1  --table testtbl --bindir /usr/local/sqoop/ --target-dir /user/sqoop/sqlimport/employee
+
+
+
+
+
+
+

@@ -1,0 +1,31 @@
+Host(70.12.114.130)
+Sql Server
+
+Server01(192.168.137.100) - Java(JDK)
+Mariadb (hadoop/Pa$$w0rd123)
+
+Server02(192.168.137.101) - Java(JDK)
+Sqoop
+Flume
+Hadoop
+
+* Sqoop Import/Export
+RDBMS - Sqoop - HDFS
+
+tar xvfz hadoop-2.9.2.tar.gz
+cd hadoop-2.9.2
+
+/home/hadoop/hadoop-2.9.2/etc/hadoop 설정파일경로
+vi hadoop-env.sh
+export JAVA_HOME=/usr/java/default
+
+* Standalone Operation
+wordcount
+/home/hadoop/hadoop-2.9.2/test/data.txt
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.9.2.jar wordcount test test-output
+
+* Pseudo-Distributed Operation
+- Batch Processing Module 
+- HDFS Module
+
+
