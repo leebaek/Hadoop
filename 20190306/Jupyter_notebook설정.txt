@@ -1,0 +1,16 @@
+jupyter notebook --ip=0.0.0.0 --no-browser
+
+$ jupyter notebook --generate-config
+$ cd ~/.jupyter
+$ vi jupyter_notebook_config
+
+$ pip install hdfs
+
+import pandas as pd
+from hdfs import InsecureClient
+import os
+
+client_hdfs = InsecureClient('http://server02:50070')
+with client_hdfs.read('/user/hadoop/sqoopMsSqlToHdfs/part-m-00000', encoding='utf-8') as reader:
+    df = pd.read_csv(reader, header=None)
+df

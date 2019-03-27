@@ -1,0 +1,10 @@
+* Microsoft Sql Server
+sqoop list-databases --connect jdbc:sqlserver://70.12.114.130:1433 --username 'sa' --password '1234'
+
+sqoop import --connect 'jdbc:sqlserver://70.12.114.130:1433;database=VideoShop' --username 'sa' --password '1234' --table VS_CUSTOMER -m 1 --target-dir /user/hadoop/sqoopMsSqlToHdfs
+
+
+sqoop import --connect 'jdbc:sqlserver://70.12.114.130:1433;database=VideoShop' --username 'sa' --password '1234' --table VS_TAPE -m 1 --target-dir /user/hadoop/sqoopMsSqlToHdfs2
+
+
+sqoop export --connect 'jdbc:sqlserver://70.12.114.130:1433;database=VideoShop' --username 'sa' --password '1234' --table VS_CUSTOMER3 -m 1 --export-dir /user/hadoop/sqoopMsSqlToHdfs/part-m-00000

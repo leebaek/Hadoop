@@ -1,0 +1,57 @@
+Apache Hadoop
+
+* 데이터 수집 
+sqoop
+flume
+
+sqoop(RDBMS) ->(import/export) -> HDFS(Hadoop)
+
+Server01(MariaDB) - 192.168.137.100
+- hosts  
+
+Server02(Hadoop) - 192.168.137.101
+- hosts
+
+Host - 70.12.114.130
+- hosts
+
+* Hadoop (Batch Processing, HDFS)
+- HDFS => start-dfs.sh => http://server02:50070
+  Namenode, Datanode
+- Batch Processing => start-yarn.sh => MapReduce
+  Resoucemanager, Nodemanager
+
+
+  Server01(Source), Server02(Hadoop)
+
+  Node(Server)
+
+  Hadoop(Master/Slave) -> 2.9.2 (2.x)
+
+Source(Host SqlServer)
+Server02
+-> root/hadoop
+-> hadoop/hadoop
+
+vi .bash_profile
+start-dfs.sh
+jps
+start-yarn.sh
+jps
+http://server02:50070 => HDFS
+http://server02:8088 => MapReduce Batch Processing
+C:\Windows\System32\drivers\etc
+-> hosts
+
+
+flume ->streaming -> HDFS(Hadoop)
+twitter
+webserver 접속자 logs
+...
+
+Server01                   Server02
+Apache WebServer           Hadoop(HDFS)
+Flume A-------------------->Flume B
+(Source, Channdel, Sink)   (Source, Channdel, Sink)
+SenderAgent 4545            ReceiverAgent 4545
+192.168.137.101             0.0.0.0

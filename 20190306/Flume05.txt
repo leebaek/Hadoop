@@ -1,0 +1,57 @@
+# yum -y install httpd
+# systemctl start httpd        http://server01/
+# systemctl enable httpd
+# systemctl status httpd
+# systemctl stop httpd
+
+* Server01 설정
+$ ssh server02
+$ scp -r apache-flume-1.9.0-bin server01:/home/hadoop/
+$ exit
+$ cd apache-flume-1.9.0-bin/conf
+$ vi flume-conf.properties
+
+SenderAgent.sources = WebServer
+SenderAgent.sinks = AvroSink
+SenderAgent.channels = MemChannel
+SenderAgent.sources.WebServer.type = exec
+SenderAgent.sources.WebServer.command = tail -f /etc/httpd/logs/access_log
+SenderAgent.sources.WebServer.batchSize = 1
+SenderAgent.sources.WebServer.interceptors = itime
+SenderAgent.sources.WebServer.interceptors.itime.type = timestamp
+SenderAgent.sinks.AvroSink.type = avro
+SenderAgent.sinks.AvroSink.hostname = 192.168.137.101
+SenderAgent.sinks.AvroSink.port = 4545
+SenderAgent.channels.MemChannel.type = memory
+SenderAgent.sources.WebServer.channels = MemChannel
+SenderAgent.sinks.AvroSink.channel = MemChannel
+
+
+bin/flume-ng agent --conf-file conf/flume-conf.properties --name SenderAgent -Dflume.root.logger=INFO,console
+
+
+* Server02설정 
+
+$ cp flume-conf.properties.template flume-conf.properties
+$ vi flume-conf.properties
+
+ReceiverAgent.sources = AvroSource
+ReceiverAgent.sinks = HDFS
+ReceiverAgent.channels = MemChannel
+ReceiverAgent.sources.AvroSource.type = avro
+ReceiverAgent.sources.AvroSource.bind = 0.0.0.0
+ReceiverAgent.sources.AvroSource.port = 4545
+ReceiverAgent.sinks.HDFS.type = hdfs
+ReceiverAgent.sinks.HDFS.hdfs.fileType = DataStream
+ReceiverAgent.sinks.HDFS.hdfs.rollCount = 1000
+ReceiverAgent.sinks.HDFS.hdfs.path = hdfs://server02:9000/user/hadoop/flume_httpd_logs/
+ReceiverAgent.channels.MemChannel.type = memory
+ReceiverAgent.sources.AvroSource.channels = MemChannel
+ReceiverAgent.sinks.HDFS.channel = MemChannel
+
+
+
+bin/flume-ng agent --conf-file conf/flume-conf.properties --name ReceiverAgent -Dflume.root.logger=INFO,console
+
+
+
