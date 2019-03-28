@@ -1,0 +1,113 @@
+﻿* Server01 172.16.0.100
+Server02 172.16.0.101
+hadoop 2.9.2 -> 1. 독립실행모드
+				hdfs(x), jar
+				2. 가상분산모드
+				hdfs(o) - namenode, datanode, 
+				batch processing(o) - YARN
+				- resoucemanager, nodemanager
+Server03 172.16.0.102
+* 완전 분산 모드
+Server10 172.16.0.110 namenode, resoucemanager
+jdk 1.8, hadoop 2.9.2, protobuffer 2.5
+ssh-keygen -rsa => public, private key
+dns : 168.126.63.1
+      8.8.8.8
+
+Server11 172.16.0.111 datanode, nodemanager
+jdk 1.8, hadoop 2.9.2, protobuffer 2.5
+
+Server12 172.16.0.112 datanode, nodemanager
+jdk 1.8, hadoop 2.9.2, protobuffer 2.5
+
+init 0(shutdown)
+init 6(reboot)
+
+* ip설정
+# vi /etc/sysconfig/network-scripts/ifcfg-eth0
+
+* hostname설정
+# vi /etc/hostname
+
+* hosts설정 (Server10, Server11, Server12)
+# vi /etc/hosts
+
+172.16.0.110	server10
+172.16.0.111	server11
+172.16.0.112	server12
+
+# systemctl restart network 
+		(Server10, Server11, Server12)
+# systemctl stop firewalld
+		(Server10, Server11, Server12)
+# systemctl disable firewalld
+		(Server10, Server11, Server12)
+# systemctl restart network 
+		(Server10, Server11, Server12)
+
+# yum install net-tools wget -y
+# pwd
+# dir
+# yum install jdk-8u201-linux-x64.rpm
+	(Server10, Server11, Server12)
+
+# exit
+$ vi .bash_profile
+	(Server10, Server11, Server12)
+
+$ source .bash_profile or exit(재로그인)
+$ ssh-keygen -t rsa (Server10)
+$ cd .ssh
+$ cp id_rsa.pub authorized_keys
+$ cd ..
+$ chmod 755 ~/.ssh/
+$ chmod 644 ~/.ssh/authorized_keys
+$ ssh server10
+$ exit
+$ mkdir ~/.ssh (Server11, Server12)
+$ cd ~/.ssh (Server10)
+$ scp authorized_keys server11:/home/hadoop/.ssh/ (Server10)
+$ scp authorized_keys server12:/home/hadoop/.ssh/ (Server10)
+
+(Server11, Server12)
+$ chmod 755 ~/.ssh/
+$ chmod 644 ~/.ssh/authorized_keys
+
+$ tar xvzf hadoop-2.9.2.tar.gz
+$ cd ~/hadoop-2.9.2/etc/hadoop
+$ scp -r ~/hadoop-2.9.2 server11:/home/hadoop
+$ scp -r ~/hadoop-2.9.2 server12:/home/hadoop
+
+(Server10, Server11, Server12)
+# yum groupinstall "Development Tools"
+# yum groupinstall "Development Tools" "Development Libraries"
+# yum install openssl-devel cmake
+$ cd ~/
+$ wget https://github.com/protocolbuffers/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.gz
+# yum clean all
+# cd /home/hadoop
+# cp protobuf-2.5.0.tar.gz /usr/local/
+# cd /usr/local
+# tar xvfz protobuf-2.5.0.tar.gz
+# cd protobuf-2.5.0
+# ./configure (comfile작업)
+# make
+# make install
+
+(Server10, Server11, Server12)
+$ cd ~/hadoop-2.9.2/etc/hadoop
+$ vi slaves
+server11
+server12
+
+scp slaves server11:/home/hadoop/hadoop-2.9.2/etc/hadoop/
+
+$ cd hadoop-2.9.2
+$ bin/hdfs namenode -format
+$ sbin/start-dfs.sh
+$ sbin/start-yarn.sh
+
+
+
+
+

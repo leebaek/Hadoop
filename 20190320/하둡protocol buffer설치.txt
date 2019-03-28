@@ -1,0 +1,13 @@
+protocol buffer github (2.5.0)
+# yum groupinstall "Development Tools"
+# yum install openssl-devel cmake
+$ wget https://github.com/google/protobuf/releases/download/v2.5.0/protobuf-2.5.0.zip
+# yum clean all
+# yum groupinstall "Development Tools" "Development Libraries"
+# cd /home/hadoop
+# cp protobuf-2.5.0.tar.gz /usr/local/
+# cd /usr/local
+# tar xvfz protobuf-2.5.0.tar.gz
+# cd protobuf-2.5.0
+# make
+# make install
