@@ -1,0 +1,164 @@
+# Copyright (c) 1993-2009 Microsoft Corp.
+#
+# This is a sample HOSTS file used by Microsoft TCP/IP for Windows.
+#
+# This file contains the mappings of IP addresses to host names. Each
+# entry should be kept on an individual line. The IP address should
+# be placed in the first column followed by the corresponding host name.
+# The IP address and the host name should be separated by at least one
+# space.
+#
+# Additionally, comments (such as these) may be inserted on individual
+# lines or following the machine name denoted by a '#' symbol.
+#
+# For example:
+#
+#      102.54.94.97     rhino.acme.com          # source server
+#       38.25.63.10     x.acme.com              # x client host
+
+# localhost name resolution is handled within DNS itself.
+#	127.0.0.1       localhost
+#	::1             localhost
+
+# Added by Docker for Windows
+70.12.114.130 host.docker.internal
+70.12.114.130 gateway.docker.internal
+# End of section
+
+172.16.0.100 server01
+172.16.0.101 server02
+
+172.16.0.110 server10
+172.16.0.111 server11
+172.16.0.112 server12
+
+\\70.12.114.130\hadoop
+http://server10:50070 -> hdfs web ui
+http://server10:8088 -> resoucemanager web ui
+$ cd ~/hadoop-2.9.2
+$ bin/hdfs dfs -mkdir /user
+$ bin/hdfs dfs -mkdir /user/hadoop
+$ bin/hdfs dfs -put etc/hadoop input
+$ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.9.2.jar grep input output 'dfs[a-z.]+'
+
+root/hadoop
+hadoop/hadoop
+
+bin/hdfs dfs -ls /
+bin/hadoop fs -ls /
+
+- 독립실행 모드
+- 가상분산 모드
+- 완전분산 모드, HA
+bin/hdfs dfs -put test.txt /user/hadoop/
+bin/hdfs dfs -ls /user/hadoop
+bin/hdfs dfs -get /user/hadoop/test.txt test2.txt
+bin/hdfs dfs -cat /user/hadoop/test.txt
+* Source
+Hello World By World Hello....
+* Map Task
+Hello 1
+World 1
+By    1
+World 1
+Hello 1
+* Shuffle Phase(Sort, Partition...)
+* Reduce Task
+Hello 2
+World 2
+By 1
+
+bin/hdfs dfs -mkdir /user/hadoop/input2
+bin/hdfs dfs -put words.txt /user/hadoop/input2/
+bin/hdfs dfs -ls /user/hadoop/input2
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.9.2.jar wordcount input2 output2
+ bin/hdfs dfs -cat /user/hadoop/output2/*
+
+ * Data Processing
+   MapReduce Framework -> jar
+   YARN(Resource Management)
+ * HDFS
+
+ Sqoop, Flume -> HDFS + Apache Spark(Scala, Python, R)
+ Sqoop, Flume -> HDFS + MapReduce(Java)
+ Sqoop, Flume -> HDFS + Machine Learning Server(Python, R)
+
+ Stom, Kafka -> HDInsight + (Machine Learning...) -> Visualization on Azure(Cloud Environment)
+
+1 head
+2 
+
+2 head (HA)
+4 data
+
+apache hadoop
+apache spark
+
+admin@mydh12344321-ssh.azurehdinsight.net
+
+
+HA -> Zookeeper
+
+node 1, node 2, node 3, node 4
+zk 1, zk 2, zk 3
+jn 1, jn 2, jn 3
+name 1, name 2
+                data 3, data 4
+
+myhd1234432111-ssh.azurehdinsight.net:50070
+apache zookeepr (분산 코디네이션 서비스)
+
+server 2
+
+a = 1(server1), a = 1(server11), a = 1(server111)
+
+server 3
+
+(Server10,Server11, Server12)
+$ wget http://apache.tt.co.kr/zookeeper/stable/zookeeper-3.4.13.tar.gz
+$ tar xvfz zookeeper-3.4.13.tar.gz
+$ cd zookeeper-3.4.13.tar.gz
+$ cd conf
+$ cp zoo_sample.cfg zoo.cfg
+$ vi zoo.cfg
+dataDir=/home/hadoop/zookeeper-3.4.13/data
+$ mkdir ~/zookeeper-3.4.13/data
+$ cd ..
+$ bin/zkServer.sh start
+$ bin/zkServer.sh status
+$ bin/zkCli.sh
+$ bin/zkServer.sh stop
+
+con/zoo.cfg
+dataDir=/home/hadoop/zookeeper-3.4.13/data
+server.1=server10:2888:3888
+server.2=server11:2888:3888
+server.3=server12:2888:3888
+
+* Server10
+/home/hadoop/zookeeper-3.4.13/data/myid
+1
+* Server11
+/home/hadoop/zookeeper-3.4.13/data/myid
+2
+* Server12
+/home/hadoop/zookeeper-3.4.13/data/myid
+3
+
+$ scp -r ~/zookeeper-3.4.13/* server11:/home/hadoop/zookeeper-3.4.13/
+$ scp -r ~/zookeeper-3.4.13/* server12:/home/hadoop/zookeeper-3.4.13/
+
+(Server10, Server11, Server12)
+$ cd ~/zookeeper-3.4.13
+$ echo 1 > myid (Server10)
+$ echo 2 > myid (Server11)
+$ echo 3 > myid (Server12)
+
+(Server10, Server11, Server12)
+$ cd ~/zookeeper-3.4.13
+$ bin/zkServer.sh start
+$ bin/zkServer.sh status
+
+$ bin/zkCli.sh
+create /myzone "HelloWorld"
+get /myzone "HelloWorld"
