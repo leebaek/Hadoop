@@ -1,0 +1,71 @@
+[빅데이터 수집]
+
+* VideoShop데이터베이스의 'VS_CUSTOMER' 테이블을 Sqoop을 사용하여 HDFS에 Import/Export하시오.
+
+# 답
+
+1) ./bin/sqoop list-databases --connect jdbc:sqlserver://70.12.114.147:1433 --username 'sa' --password '1234'
+
+2) ./bin/sqoop import --connect 'jdbc:sqlserver://70.12.114.147:1433;database=VideoShop' --username 'sa' --password 'Pa$$w0rd1234' --table VS_CUSTOMER -m 1 --target-dir /user/hadoop/sqoopMsSqlToHdfs
+
+=============================================================================================================
+
+[Microsoft R 서버를 활용한 빅데이터 처리 및 분석]
+* 전국 커피숍 년도별 폐업건수를 구하고 그래프로 출력하시오.
+
+# 답
+
+1) df <- read.csv("coffee.csv")
+df
+==> csv파일을 불러온다.
+
+2) df2 <- table(df[which(df$stateOfbusiness == "폐업 등"),15])
+df2
+==> df의 stateOfbusiness의 value가 '폐업 등'의 건수를 출력한다.
+
+3) df3 <- as.data.frame(df2)
+df3
+==> df2를 dataframe형태로 만들어준다.
+
+4) library(ggplot2)
+==> 그래프로 출력하기 위해 ggplot2 라이브러리를 불러온다.
+
+5) qplot(df3$Var1, df3$Freq)
+==> qplot으로 출력한다.
+
+=============================================================================================================
+
+[HD Insight를 활용한 하둡, 스파크 엔지니어링]
+* Apache Spark를 사용하여 WordCount를 구하시오.(ab40thv.txt)
+
+# 답
+
+spark-2.3.3-bin-hadoop2.7.tgz를 winSCP로 서버에 옮긴다.
+
+$ tar xvfz spark-spark-2.3.3-bin-hadoop2.7.tgz로 압축을 푼다.
+
+$ cd spark-2.3.3-bin-hadoop2.7로 경로를 이동하고
+
+$ ./bin/pyspark --master spark://server10:7077을 실행하여 스파크를 활성화한다.
+ http://server10:8080/ 접속하면 정상적으로 뜬다.
+
+$ cd ~/hadoop-2.9.2로 경로를 설정해주고
+
+$ bin/hadoop fs -mkdir /user/hadoop/spark_data
+spark_data라는 디렉터리를 생성한다.
+
+$ bin/hadoop fs -put ~/ab40thv.txt /user/hadoop/spark_data/
+spark_data 디렉터리에 ab40thv.txt파일을 이동시킨다.
+
+$ bin/hadoop fs -ls /user/hadoop/spark_data
+
+./bin/pyspark --master spark://server10:7077로 다시 스파크를 활성화하고
+
+>>> data = sc.textFile("hdfs://server10:9000/user/hadoop/spark_data/ab40thv.txt")
+>>> data.collect()
+>>> data2 = data.flatMap(lambda line : line.split(" "))
+>>> data3 = data2.map(lambda word: (word,1))
+>>> data4 = data3.reduceByKey(lambda a, b: a+b)
+>>> data4.collect()
+
+위 과정을 통해 wordcount를 수행한다.
