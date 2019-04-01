@@ -1,0 +1,11 @@
+09:39 ~ 10:30
+
+* ssh
+HDInsight에 포함된 MapReduce 예제 실행
+yarn jar /usr/hdp/current/hadoop-mapreduce-client/hadoop-mapreduce-examples.jar wordcount /example/data/gutenberg/davinci.txt /output2
+
+Azure Storage 탐색기
+
+Sqoop import --connect 'jdbc:sqlserver://mysqdb123432111.database.windows.net:1433;database=mydbtest' --
+username 'admin2019' --password 'Pa$$w0rd2019' --table 'VS_CUSTOMER' --target-dir wasbs:///<pathtodatastorage> 
+
